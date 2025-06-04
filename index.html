@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nama Anda - Portofolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Variabel CSS untuk kemudahan perubahan warna */
+        :root {
+            --primary-color: #007bff; /* Biru utama */
+            --secondary-color: #6c757d; /* Abu-abu */
+            --accent-color: #28a745; /* Hijau */
+            --text-color: #343a40; /* Hitam keabu-abuan */
+            --light-bg: #f8f9fa; /* Latar belakang terang */
+            --dark-bg: #e9ecef; /* Latar belakang agak gelap */
+            --white: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset dan Basic Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Pastikan ini ada di sini */
+        }
+
+        /* Penyesuaian HTML dan Body untuk mencegah pergeseran horizontal */
+        html {
+            width: 100%; /* Menambahkan ini untuk memastikan lebar konsisten */
+            overflow-x: hidden; /* Mencegah scrollbar horizontal */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            /* box-sizing: border-box; Ini sudah diatur di '*' */
+            
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            overflow-y: scroll; /* Memaksa scrollbar vertikal selalu ada untuk mencegah pergeseran */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Header dan Navigasi */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active-nav-link {
+            color: var(--accent-color);
+        }
+
+        nav ul li a.active-nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* Section Styling Umum */
+        section {
+            padding: 60px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            display: none; /* Sembunyikan semua section secara default */
+        }
+
+        section.active-section {
+            opacity: 1;
+            transform: translateY(0);
+            display: block; /* Tampilkan section yang aktif */
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--dark-bg);
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-size: 2.5em;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        #home {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://via.placeholder.com/1920x1080/007bff/ffffff?text=Background+Image') no-repeat center center/cover;
+            color: var(--white);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 70px); 
+            padding: 0; 
+            flex-direction: column; 
+        }
+
+        #home .hero-content {
+            max-width: 800px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; 
+        }
+
+        #home h2 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            color: var(--white); 
+        }
+
+        #home h2::after {
+            background-color: var(--white); 
+        }
+
+        #home p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        #home .profile-photo-hero {
+            width: 150px; 
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-color); 
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #218838; /* Warna hover untuk accent-color */
+        }
+
+        /* About Section */
+        #about {
+            text-align: center;
+        }
+
+        #about .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        /* Hapus .profile-photo di sini jika hanya ingin ada di hero */
+        /* #about .profile-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            box-shadow: var(--box-shadow);
+        } */
+
+        #about p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* Skills Section */
+        #skills .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            justify-content: center;
+            padding: 0 50px;
+        }
+
+        #skills .skill-item {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #skills .skill-item:hover {
+            transform: translateY(-5px);
+        }
+
+        #skills .skill-item i {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        #skills .skill-item h3 {
+            font-size: 1.3em;
+            color: var(--text-color);
+        }
+
+        /* Styling untuk logo keahlian */
+        #skills .skill-item .skill-logo {
+            width: 50px; /* Ukuran logo */
+            height: 50px;
+            margin-bottom: 15px;
+            display: block; /* Agar gambar tidak inline */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        /* Portfolio Section */
+        #portfolio .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            justify-content: center; /* Untuk menengahkan jika hanya ada satu item */
+        }
+
+        #portfolio .portfolio-item {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        #portfolio .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+
+        #portfolio .portfolio-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        #portfolio .portfolio-item .portfolio-info {
+            padding: 20px;
+        }
+
+        #portfolio .portfolio-item h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        #portfolio .portfolio-item p {
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        #portfolio .portfolio-item .btn {
+            font-size: 0.9em;
+            padding: 8px 15px;
+        }
+
+        /* Contact Section */
+        #contact .contact-info {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        #contact .contact-info p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        #contact .social-links {
+            text-align: center;
+        }
+
+        #contact .social-links a {
+            display: inline-block;
+            margin: 0 15px;
+            color: var(--primary-color);
+            font-size: 2.5em;
+            transition: color 0.3s ease;
+        }
+
+        #contact .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto; /* Memastikan footer selalu di bawah */
+        }
+
+        /* Media Queries untuk Responsif */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 10px 10px 10px;
+            }
+
+            #home h2 {
+                font-size: 2.5em;
+            }
+
+            #home p {
+                font-size: 1em;
+            }
+
+            #skills .skills-grid,
+            #portfolio .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #skills .skills-grid {
+                padding: 0 20px;
+            }
+
+            #about .about-content {
+                flex-direction: column;
+            }
+
+            #about p {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            section h2 {
+                font-size: 2em;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+
+            #contact .social-links a {
+                font-size: 2em;
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Portofolio</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home" data-section="home" class="active-nav-link">Beranda</a></li>
+                    <li><a href="#about" data-section="about">Tentang Saya</a></li>
+                    <li><a href="#skills" data-section="skills">Keahlian</a></li>
+                    <li><a href="#portfolio" data-section="portfolio">Proyek</a></li>
+                    <li><a href="#contact" data-section="contact">Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="active-section">
+            <div class="container hero-content">
+                <img src="d:\kevin_portofolio\1.jpg" alt="Foto Profil" class="profile-photo-hero">
+                <h2>Selamat Datang di Portofolio Saya</h2>
+                <p>
+                    Halo! Saya Martinus Kevin Keri, seorang mahasiswa dengan passion dalam pengembangan web dan desain.
+                    Jelajahi proyek dan keahlian saya di bawah ini.
+                </p>
+                <a href="#about" class="btn">Pelajari Lebih Lanjut</a>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>Tentang Saya</h2>
+                <div class="about-content">
+                    <p>
+                        Halo! Saya Martinus Kevin Keri, seorang mahasiswa dengan passion dalam pengembangan web dan desain. Saya memiliki ketertarikan kuat dalam menciptakan solusi digital yang inovatif dan user-friendly. Selama perjalanan saya, saya telah belajar berbagai teknologi dan alat untuk membangun aplikasi web yang responsif dan fungsional.
+                        <br><br>
+                        Saya selalu antusias untuk mempelajari hal-hal baru dan menghadapi tantangan. Tujuan saya adalah terus meningkatkan kemampuan saya dan berkontribusi pada proyek-proyek yang berdampak. Selain coding, saya suka membaca buku, mendengarkan musik, dan bermain game. Mari berkolaborasi!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2>Keahlian</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/html-5--v1.png" alt="HTML5 Logo" class="skill-logo">
+                        <h3>HTML5</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/css3.png" alt="CSS3 Logo" class="skill-logo">
+                        <h3>CSS3</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/javascript--v1.png" alt="JavaScript Logo" class="skill-logo">
+                        <h3>JavaScript</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python Logo" class="skill-logo">
+                        <h3>Python</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/react-native.png" alt="React Logo" class="skill-logo">
+                        <h3>React.js</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/git.png" alt="Git Logo" class="skill-logo">
+                        <h3>Git</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/adobe-photoshop--v1.png" alt="Photoshop Logo" class="skill-logo">
+                        <h3>Desain Grafis</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://img.icons8.com/color/48/000000/database.png" alt="SQL Logo" class="skill-logo">
+                        <h3>SQL</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <div class="container">
+                <h2>Portofolio</h2>
+                <div class="portfolio-grid">
+                    <div class="portfolio-item">
+                        <img src="d:\kevin_portofolio\3.jpg" alt="Aplikasi Manajemen Tugas">
+                        <div class="portfolio-info">
+                            <h3>Aplikasi Manajemen Tugas</h3>
+                            <p>Aplikasi mobile dan web untuk membantu pengguna mengatur dan melacak tugas harian mereka dengan fitur notifikasi dan prioritas.</p>
+                            <a href="#" class="btn">Lihat Proyek</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Kontak</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> Email:martinuskevinkeri@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> Telepon: 082236576016</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Lokasi: Malang, Indonesia</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/kevin_kerii?igsh=anR3dWZuMHhva285" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/kerikefin" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.facebook.com/kefin.kerin.5" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Martinus Kevin Keri. Semua Hak Dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav ul li a');
+            const sections = document.querySelectorAll('main section');
+
+            function showSection(targetSectionId) {
+                sections.forEach(section => {
+                    section.classList.remove('active-section');
+                    section.style.display = 'none'; // Sembunyikan semua section secara default
+                });
+
+                const activeSection = document.getElementById(targetSectionId);
+                if (activeSection) {
+                    activeSection.style.display = 'block'; // Tampilkan sebelum transisi opacity
+                    setTimeout(() => {
+                        activeSection.classList.add('active-section');
+                    }, 10); // Penundaan sangat kecil untuk memicu transisi
+
+                    // Scroll to the active section
+                    setTimeout(() => {
+                        const activeSection = document.getElementById(targetSectionId);
+                        if (activeSection) {
+                            activeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 100); // Penundaan kecil agar transisi opacity selesai
+                }
+            }
+
+            // Atur event listener untuk setiap tautan navigasi
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah perilaku default tautan (scroll ke #)
+                    const targetSectionId = this.dataset.section; // Ambil ID section dari data-attribute
+
+                    // Panggil fungsi untuk menampilkan section
+                    showSection(targetSectionId);
+
+                    // Hapus kelas 'active-nav-link' dari semua tautan navigasi
+                    navLinks.forEach(navLink => navLink.classList.remove('active-nav-link'));
+                    // Tambahkan kelas 'active-nav-link' ke tautan yang sedang diklik
+                    this.classList.add('active-nav-link');
+                });
+            });
+
+            // Inisialisasi: Tampilkan section 'home' dan aktifkan link 'Beranda' saat halaman dimuat
+            showSection('home');
+            document.querySelector('nav ul li a[data-section="home"]').classList.add('active-nav-link');
+        });
+    </script>
+</body>
+</html>

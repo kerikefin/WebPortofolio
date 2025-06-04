@@ -36,8 +36,6 @@
         body {
             margin: 0;
             padding: 0;
-            /* box-sizing: border-box; Ini sudah diatur di '*' */
-            
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
@@ -45,7 +43,7 @@
             display: flex;
             min-height: 100vh;
             flex-direction: column;
-            overflow-y: scroll; /* Memaksa scrollbar vertikal selalu ada untuk mencegah pergeseran */
+            /* overflow-y: scroll; Ini dihapus agar position: sticky pada header bekerja dengan benar terhadap viewport */
         }
 
         .container {
@@ -115,17 +113,17 @@
 
         /* Section Styling Umum */
         section {
-            padding: 60px 0;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            display: none; /* Sembunyikan semua section secara default */
+            padding: 60px 0; /* Padding asli */
+            /* opacity: 0; */ /* Ini sepertinya untuk animasi, bisa dihidupkan jika dibutuhkan */
+            /* transform: translateY(20px); */
+            /* transition: opacity 0.6s ease-out, transform 0.6s ease-out; */
+            /* display: none; */ /* Ini menyembunyikan section */
         }
 
         section.active-section {
-            opacity: 1;
-            transform: translateY(0);
-            display: block; /* Tampilkan section yang aktif */
+            /* opacity: 1; */
+            /* transform: translateY(0); */
+            display: block; /* Ini membuat section terlihat */
         }
 
         section:nth-of-type(even) {
@@ -160,8 +158,8 @@
             text-align: center;
             display: flex;
             align-items: center;
-            justify-content: center;
-            height: calc(100vh - 70px); 
+            justify-content: center; /* Asli, konten di tengah vertikal */
+            height: calc(100vh - 70px); /* Asli, mengambil hampir seluruh tinggi viewport */
             padding: 0; 
             flex-direction: column; 
         }
@@ -453,13 +451,13 @@
     <main>
         <section id="home" class="active-section">
             <div class="container hero-content">
-                <img src="1.jpg" alt="Foto Profil" class="profile-photo-hero">
+                <img src="d:\kevin_portofolio\1.jpg" alt="Foto Profil" class="profile-photo-hero">
                 <h2>Selamat Datang di Portofolio Saya</h2>
                 <p>
                     Halo! Saya Martinus Kevin Keri, seorang mahasiswa dengan passion dalam pengembangan web dan desain.
                     Jelajahi proyek dan keahlian saya di bawah ini.
                 </p>
-                <a href="#about" class="btn">Pelajari Lebih Lanjut</a>
+                <a href="#portfolio" class="btn">Pelajari Lebih Lanjut</a>
             </div>
         </section>
 
@@ -521,7 +519,7 @@
                 <h2>Portofolio</h2>
                 <div class="portfolio-grid">
                     <div class="portfolio-item">
-                        <img src="3.jpg" alt="Aplikasi Manajemen Tugas">
+                        <img src="d:\kevin_portofolio\3.jpg" alt="Aplikasi Manajemen Tugas">
                         <div class="portfolio-info">
                             <h3>Aplikasi Manajemen Tugas</h3>
                             <p>Aplikasi mobile dan web untuk membantu pengguna mengatur dan melacak tugas harian mereka dengan fitur notifikasi dan prioritas.</p>
@@ -558,28 +556,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('nav ul li a');
-            const sections = document.querySelectorAll('main section');
 
-            function showSection(targetSectionId) {
-                sections.forEach(section => {
-                    section.classList.remove('active-section');
-                    section.style.display = 'none'; // Sembunyikan semua section secara default
-                });
+            function scrollToSection(targetSectionId) {
+                const targetSection = document.getElementById(targetSectionId);
+                if (targetSection) {
+                    const headerOffset = document.querySelector('header').offsetHeight;
+                    const elementPosition = targetSection.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerOffset - 20; // Adjusted for more space
 
-                const activeSection = document.getElementById(targetSectionId);
-                if (activeSection) {
-                    activeSection.style.display = 'block'; // Tampilkan sebelum transisi opacity
-                    setTimeout(() => {
-                        activeSection.classList.add('active-section');
-                    }, 10); // Penundaan sangat kecil untuk memicu transisi
-
-                    // Scroll to the active section
-                    setTimeout(() => {
-                        const activeSection = document.getElementById(targetSectionId);
-                        if (activeSection) {
-                            activeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }, 100); // Penundaan kecil agar transisi opacity selesai
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
                 }
             }
 
@@ -589,8 +577,8 @@
                     event.preventDefault(); // Mencegah perilaku default tautan (scroll ke #)
                     const targetSectionId = this.dataset.section; // Ambil ID section dari data-attribute
 
-                    // Panggil fungsi untuk menampilkan section
-                    showSection(targetSectionId);
+                    // Panggil fungsi untuk scroll ke section
+                    scrollToSection(targetSectionId);
 
                     // Hapus kelas 'active-nav-link' dari semua tautan navigasi
                     navLinks.forEach(navLink => navLink.classList.remove('active-nav-link'));
@@ -599,9 +587,12 @@
                 });
             });
 
-            // Inisialisasi: Tampilkan section 'home' dan aktifkan link 'Beranda' saat halaman dimuat
-            showSection('home');
-            document.querySelector('nav ul li a[data-section="home"]').classList.add('active-nav-link');
+            // Inisialisasi: Scroll ke section 'home' dan aktifkan link 'Beranda' saat halaman dimuat
+            // No need to scroll to home on load, as the default HTML flow handles it.
+            // Just activate the home link if the page loads at the top.
+            if (window.location.hash === '' || window.location.hash === '#home') {
+                document.querySelector('nav ul li a[data-section="home"]').classList.add('active-nav-link');
+            }
         });
     </script>
 </body>
